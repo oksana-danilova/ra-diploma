@@ -1,0 +1,26 @@
+.catalog-item {
+    min-height: 200px;
+}
+
+.item-size {
+    display: inline-block;
+
+    padding: 0 10px;
+
+    cursor: pointer;
+}
+
+.item-size_selected {
+    border-radius: 15px;
+
+    color: #ffffff;
+    background: #727e86;
+}
+
+.btn-group {
+    padding: 0 10px;
+}
+
+.btn-danger {
+    width: 100%;
+}

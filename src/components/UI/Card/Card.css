@@ -1,0 +1,22 @@
+.col-4 {
+    padding-bottom: 12px;
+}
+
+.card {
+    height: 100%;
+}
+
+.catalog-item-card {
+    margin-bottom: 1em;
+}
+
+.card-img-top {
+    padding: 1.25rem;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
