@@ -1,26 +1,22 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { CartContext } from "./CartContext";
+import { CartContext } from './CartContext';
 
-export function CartProvider(props) {
+export function CartProvider({ children }) {
 
     const [cart, setCart] = useState(() => {
         let savedCart = [];
 
         try {
-            savedCart = JSON.parse(localStorage.getItem('cart'));
+            savedCart = JSON.parse(localStorage.getItem('cart')) || [];
         } catch (error) {
-            console.log(error);
+            console.error("Error parsing cart:", error);
             savedCart = [];
         }
 
         return savedCart;
     });
-
-    useEffect(() => {
-        localStorage.setItem('cart', []);
-    }, []);
 
     useEffect(() => {
         if (cart) {
@@ -29,10 +25,10 @@ export function CartProvider(props) {
     }, [cart]);
 
     function getProductIndex(id, size) {
-        const index = cart.findIndex((product) => {
-            return product.id === id && product.size === size;
-        });
-
+        const index = cart.findIndex(product =>
+            product.id === id &&
+            product.size === size
+        );
         return index;
     }
 
@@ -42,11 +38,8 @@ export function CartProvider(props) {
 
         if (index !== -1) {
             const newCount = cart[index].count + newProduct.count;
-
-            const updatedCart = cart.slice();
-
-            updatedCart[index].count = newCount > 10 ? 10 : newCount;
-
+            const updatedCart = [...cart];
+            updatedCart[index].count = Math.min(newCount, 10);
             setCart(updatedCart);
         } else {
             setCart([...cart, newProduct]);
@@ -58,7 +51,6 @@ export function CartProvider(props) {
             ...cart.slice(0, index),
             ...cart.slice(index + 1),
         ];
-
         setCart(updatedCart);
     }
 
@@ -68,16 +60,18 @@ export function CartProvider(props) {
 
     const value = {
         cart,
-        handleProductAdd: handleProductAdd,
-        handleProductDelete: handleProductDelete,
-        handleCartClear: handleCartClear,
+        handleProductAdd,
+        handleProductDelete,
+        handleCartClear,
     };
 
     return (
-        <CartContext.Provider value={value}>{props.children}</CartContext.Provider>
+        <CartContext.Provider value={value}>
+            {children}
+        </CartContext.Provider>
     );
 }
 
 CartProvider.propTypes = {
-    children: PropTypes.object,
-}
+    children: PropTypes.node.isRequired,
+};

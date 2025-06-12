@@ -57,12 +57,10 @@ export function CatalogBody() {
     }
     
     useEffect(() => {       
-        console.log("загрузка категорий");
         categoriesLoading();
     }, []);
 
     useEffect(() => {
-        console.log("загрузка карточек товаров");
         productsLoading();
     }, [searchParams]);
 
